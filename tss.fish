@@ -16,10 +16,9 @@ git merge
 
 set package_json (cat package.json)
 echo $package_json \
- | jq '.repository = "github:'$repository'"' \
+ | jq '.name = "@yarnaimo/'$project_name'" | .repository = "github:'$repository'"' \
  > package.json
 
-yarn init
 yarn add config js-yaml
 yarn add -D typescript ts-node jest ts-jest @types/node
 typesync
