@@ -14,7 +14,8 @@ git checkout master
 git branch -u origin/master master
 git merge
 
-cat package.json \
+set package_json (cat package.json)
+echo $package_json \
  | jq '.repository = "github:'$repository'"' \
  > package.json
 
