@@ -1,5 +1,5 @@
 #!/usr/bin/fish
-# jq typesync sort-package-json
+# jq typesync
 
 read -p 'echo "Project name » "' project_name
 read -p 'echo "GitHub repository » "' -c yarnaimo/$project_name repository
@@ -20,8 +20,8 @@ echo $package_json \
  > package.json
 
 yarn add config js-yaml
-yarn add -D typescript ts-node jest ts-jest @types/node
+yarn add -D typescript ts-node jest ts-jest @types/node prettier lint-staged husky sort-package-json
 typesync
 yarn
 
-sort-package-json
+node_modules/.bin/sort-package-json
