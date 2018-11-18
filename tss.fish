@@ -1,27 +1,33 @@
 #!/usr/bin/fish
-# jq typesync
+# required: jq
+
+set github_url git@github.com
+set y yarnaimo
 
 read -p 'echo "Project name » "' project_name
-read -p 'echo "GitHub repository » "' -c yarnaimo/$project_name repository
+read -p 'echo "Scoped? (y/n) » "' is_scoped
+read -p 'echo "GitHub repository » "' -c $y/$project_name repository
 
-git clone --depth=1 git@github.com:yarnaimo/tss.git $project_name
-cd $project_name
-rm -rf .git
-git init
-git remote add origin git@github.com:$repository.git
-git fetch origin
-git checkout master
-git branch -u origin/master master
-git merge
+if test $is_scoped = 'y'
+    set package_name @$y/$project_name
+    set directory @{$y}_$project_name
+else
+    set package_name $project_name
+    set directory $project_name
+end
+
+git clone $github_url:$repository.git $directory
+cd $directory
+
+git remote add tss $github_url:$y/tss.git
+git fetch tss
+git merge --allow-unrelated-histories tss/master
 
 set package_json (cat package.json)
 echo $package_json \
- | jq '.name = "@yarnaimo/'$project_name'" | .repository = "github:'$repository'"' \
+ | jq '.name = "'$package_name'" | .repository = "github:'$repository'"' \
  > package.json
 
-yarn add config js-yaml
-yarn add -D typescript ts-node jest ts-jest @types/node prettier lint-staged husky sort-package-json
-typesync
-yarn
+yarn add -D @$y/rain
 
 node_modules/.bin/sort-package-json
