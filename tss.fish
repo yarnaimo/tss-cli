@@ -28,6 +28,7 @@ echo $package_json \
  | jq '.name = "'$package_name'" | .repository = "github:'$repository'"' \
  > package.json
 
-yarn add -D @$y/rain
+yarn add @$y/rain
+yarn add -D @$y/tss
 
 node_modules/.bin/sort-package-json
