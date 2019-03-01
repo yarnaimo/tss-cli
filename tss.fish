@@ -20,7 +20,7 @@ git clone $github_url:$repository.git $directory
 cd $directory
 
 git remote add tss $github_url:$y/tss.git
-git fetch tss
+git fetch --depth 1 tss
 git merge --allow-unrelated-histories tss/master
 
 set package_json (cat package.json)
