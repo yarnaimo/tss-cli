@@ -16,19 +16,21 @@ else
     set directory $project_name
 end
 
-git clone $github_url:$repository.git $directory
+git clone $github_url:$y/ts.git $directory
 cd $directory
+rm -rf .git
+git init
+git remote add origin $github_url:$repository.git
 
-git remote add tss $github_url:$y/tss.git
-git fetch --depth 1 tss
-git merge --allow-unrelated-histories tss/master
-
-set package_json (cat package.json)
-echo $package_json \
- | jq '.name = "'$package_name'" | .repository = "github:'$repository'"' \
+cat package.json \
+ | jq ".name = \"$package_name\" | .repository = \"github:$repository\"" \
+ | jq ".devDependencies.\"@$y/tss\" = \"latest\"" \
+ | jq ".dependencies.\"@$y/rain\" = \"latest\"" \
  > package.json
 
-yarn add -D @$y/tss
-yarn add @$y/rain
-
+yarn
 node_modules/.bin/sort-package-json
+
+git add --all
+git commit -a -m '🎉 Initial commit'
+git push -u origin master
