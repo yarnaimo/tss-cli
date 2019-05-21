@@ -24,8 +24,6 @@ git remote add origin $github_url:$repository.git
 
 cat package.json \
  | jq ".name = \"$package_name\" | .repository = \"github:$repository\"" \
- | jq ".devDependencies.\"@$y/tss\" = \"latest\"" \
- | jq ".dependencies.\"@$y/rain\" = \"latest\"" \
  > package.json
 
 yarn
