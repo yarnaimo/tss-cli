@@ -26,7 +26,8 @@ cat package.json \
  | jq ".name = \"$package_name\" | .repository = \"github:$repository\"" \
  > package.json
 
-yarn
+yarn add -D @$y/tss
+yarn add @$y/rain
 node_modules/.bin/sort-package-json
 
 git add --all
