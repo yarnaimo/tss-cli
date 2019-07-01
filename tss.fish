@@ -16,11 +16,9 @@ else
     set directory $project_name
 end
 
-git clone $github_url:$y/ts.git $directory
+git clone $github_url:$repository.git $directory
 cd $directory
-rm -rf .git
-git init
-git remote add origin $github_url:$repository.git
+git update-ref -d HEAD
 
 cat package.json \
  | jq ".name = \"$package_name\" | .repository = \"github:$repository\"" \
@@ -32,4 +30,4 @@ node_modules/.bin/sort-package-json
 
 git add --all
 git commit -a -m '🎉 Initial commit'
-git push -u origin master
+git push -f
